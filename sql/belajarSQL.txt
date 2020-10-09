@@ -1,0 +1,148 @@
+Tugaskali ini kamu diminta untuk menuliskan SQL Queries untuk membuat 
+database, membuat table, mengisi data ke table, mengambil dan mengubah 
+data ke table. Tulislah jawaban jawaban ke dalam sebuah file dengan nama 
+jawaban.txt.
+
+1. Soal 1 Membuat Database
+
+jawaban :
+( "create database myshop; )
+
+
+
+2. Soal 2 Membuat Table di Dalam Database
+
+jawaban :
+( "	
+
+	a. table users :
+MariaDB [myshop]> create table users
+    -> (id int NOT NULL AUTO_INCREMENT,
+    -> name varchar(255) not null,
+    -> email varchar(255) not null,
+    -> password varchar(255) not null,
+    -> primary key (id));
+	
+	b. table items
+MariaDB [myshop]> create table items
+    -> (id int NOT NULL AUTO_INCREMENT,
+    -> name varchar(255) not null,
+    -> description varchar(255) not null,
+    -> price int,
+    -> stock int,
+    -> category_id int references categories on update cascade on delete cascade,
+    -> primary key(id));
+
+	c. table categories
+MariaDB [myshop]> create table categories
+    -> (id int NOT NULL AUTO_INCREMENT,
+    -> name varchar(255) not null,
+    -> primary key (id));
+
+
+3. Soal 3 Memasukkan Data pada Table
+
+jawban :users
+MariaDB [myshop]> insert into users (`id`,`name`,`email`,`password`) values ('NULL','jhon doe','jhon@doe.com','jhon123'),
+     -> ('NULL','jane','jane@doe.com','jane123');
+
+jawaban : categories
+MariaDB [myshop]> insert into categories (`id`,`name`) values ('NULL','gadget'),
+    -> ('NULL','cloth'),
+    -> ('NULL','men'),
+    -> ('NULL','women'),
+    -> ('NULL','branded');
+
+jawaban : items
+MariaDB [myshop]> insert into items (`id`,`name`,`description`,`price`,`stock`,`category_id`) values ('NULL','sumsang b50','hape keren dari merek sumsang','4000000','100','1'),
+    -> ('NULL','Uniklooh','baju keren dari brand ternama','500000','50','2'),
+    -> ('NULL','IMHO Watch','jam tangan anak yang jujur banget','200000','10','1');
+Query OK, 3 rows affected, 3 warnings (0.075 sec)
+
+
+4. Soal 4 Mengambil Data dari Database
+
+a.Mengambil data users
+jawaban;
+MariaDB [myshop]> SELECT `id`, `name`, `email` FROM `users` WHERE id ;
++----+----------+--------------+
+| id | name     | email        |
++----+----------+--------------+
+|  1 | jhon doe | Jhon@doe.com |
+|  2 | jane     | jane@doe.com |
++----+----------+--------------+
+2 rows in set (0.001 sec)
+
+
+
+b. Mengambil data items
+jawaban;
+==>MariaDB [myshop]> SELECT `id`, `name`, `description`, `price`, `stock`, `category_id` FROM `items` WHERE id = 1;
++----+-------------+-------------------------------+---------+-------+-------------+
+| id | name        | description                   | price   | stock | category_id |
++----+-------------+-------------------------------+---------+-------+-------------+
+|  1 | sumsang b50 | hape keren dari merek sumsang | 4000000 |   100 |           1 |
++----+-------------+-------------------------------+---------+-------+-------------+
+1 row in set (0.002 sec)
+
+==>MariaDB [myshop]> SELECT `id`, `name`, `description`, `price`, `stock`, `category_id` FROM `items` WHERE name = 'sumsang b50';
++----+-------------+-------------------------------+---------+-------+-------------+
+| id | name        | description                   | price   | stock | category_id |
++----+-------------+-------------------------------+---------+-------+-------------+
+|  1 | sumsang b50 | hape keren dari merek sumsang | 4000000 |   100 |           1 |
++----+-------------+-------------------------------+---------+-------+-------------+
+1 row in set (0.001 sec)
+
+c.Menampilkan data items join dengan kategori
+jawaban;
+
+MariaDB [myshop]> select * from items,categories;
++----+-------------+-----------------------------------+---------+-------+-------------+----+---------+
+| id | name        | description                       | price   | stock | category_id | id | name    |
++----+-------------+-----------------------------------+---------+-------+-------------+----+---------+
+|  1 | sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |  1 | gadget  |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |  1 | gadget  |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget |  200000 |    10 |           1 |  1 | gadget  |
+|  1 | sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |  2 | cloth   |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |  2 | cloth   |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget |  200000 |    10 |           1 |  2 | cloth   |
+|  1 | sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |  3 | men     |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |  3 | men     |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget |  200000 |    10 |           1 |  3 | men     |
+|  1 | sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |  4 | women   |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |  4 | women   |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget |  200000 |    10 |           1 |  4 | women   |
+|  1 | sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |  5 | branded |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |  5 | branded |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget |  200000 |    10 |           1 |  5 | branded |
++----+-------------+-----------------------------------+---------+-------+-------------+----+---------+
+15 rows in set (0.001 sec)
+
+5. Soal 5 Mengubah Data dari Database
+
+(sebelum)
+MariaDB [myshop]> select * from items;
++----+-------------+-----------------------------------+---------+-------+-------------+
+| id | name        | description                       | price   | stock | category_id |
++----+-------------+-----------------------------------+---------+-------+-------------+
+|  1 | sumsang b50 | hape keren dari merek sumsang     | 4000000 |   100 |           1 |
+|  2 | Uniklooh    | baju keren dari brand ternama     |  500000 |    50 |           2 |
+|  3 | IMHO Watch  | jam tangan anak yang jujur banget |  200000 |    10 |           1 |
++----+-------------+-----------------------------------+---------+-------+-------------+
+3 rows in set (0.001 sec)
+
+
+(sesudah)
+MariaDB [myshop]> UPDATE `items` SET `id`="1",`name`="sumsang",`description`="hape keren dari merek sumsang b50",`price`="2500000",`stock`="100",`category_id`="1" WHERE id = 1;
+Query OK, 1 row affected (0.074 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [myshop]> select * from items;
++----+------------+-----------------------------------+---------+-------+-------------+
+| id | name       | description                       | price   | stock | category_id |
++----+------------+-----------------------------------+---------+-------+-------------+
+|  1 | sumsang    | hape keren dari merek sumsang b50 | 2500000 |   100 |           1 |
+|  2 | Uniklooh   | baju keren dari brand ternama     |  500000 |    50 |           2 |
+|  3 | IMHO Watch | jam tangan anak yang jujur banget |  200000 |    10 |           1 |
++----+------------+-----------------------------------+---------+-------+-------------+
+3 rows in set (0.001 sec)
